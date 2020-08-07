@@ -9,6 +9,8 @@ const char *ssid = "CABIN1";
 const char *pass = "asdfghjkl";
 ESP8266WebServer server(80);
 
+uint8_t led= 04 ;
+
 void handle_root()
 {
 File f = LittleFS.open("/index.html","r");
@@ -25,11 +27,24 @@ void handle_notfound()
   server.send(404, "text/html", "jango pettu");
 }
 
+void ledon()
+{
+digitalWrite(led,HIGH);
+server.send(200,"text/html","ledon");
+}
+
+void ledoff()
+{
+  digitalWrite(led,LOW);
+server.send(200,"text/html","ledoff");
+}
 void setup()
 
 {
     Serial.begin(115200);
 delay(100);
+pinMode(led,OUTPUT);
+
  if(LittleFS.begin())
  {
      Serial.print("littlefson");
@@ -102,6 +117,8 @@ FSInfo fs_info;
         }
     }
 server.on("/",handle_root);
+server.on("/ledon",ledon);
+server.on("/ledoff",ledoff);
 server.onNotFound(handle_notfound);
 
 server.begin();
