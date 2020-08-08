@@ -5,7 +5,7 @@
 //#include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
 
-const char *ssid = "CABIN1";
+const char *ssid = "o2";
 const char *pass = "asdfghjkl";
 ESP8266WebServer server(80);
 
@@ -17,6 +17,7 @@ File f = LittleFS.open("/index.html","r");
   server.streamFile(f, "text/html");
   //file.close();
   //server.send(200,"text/html",f);
+  server.arg
 
 
 }
