@@ -17,9 +17,6 @@ File f = LittleFS.open("/index.html","r");
   server.streamFile(f, "text/html");
   //file.close();
   //server.send(200,"text/html",f);
-  server.arg
-
-
 }
 
 void handle_notfound()
@@ -30,15 +27,28 @@ void handle_notfound()
 
 void ledon()
 {
-digitalWrite(led,HIGH);
-server.send(200,"text/html","ledon");
+String ledstate="OFF";
+String sled=server.arg("LEDstate");
+if(sled=="1")
+{
+  digitalWrite(led,HIGH);
+  ledstate="ON";
+}
+  else
+  {
+    digitalWrite(led,LOW);
+    ledstate ="OFF";
+  }
+  server.send(200,"text/plane",ledstate);
+  
 }
 
-void ledoff()
+
+/* void ledoff()
 {
   digitalWrite(led,LOW);
 server.send(200,"text/html","ledoff");
-}
+}*/
 void setup()
 
 {
@@ -118,8 +128,8 @@ FSInfo fs_info;
         }
     }
 server.on("/",handle_root);
-server.on("/ledon",ledon);
-server.on("/ledoff",ledoff);
+server.on("/setLED",ledon);
+//server.on("/ledoff",ledoff);
 server.onNotFound(handle_notfound);
 
 server.begin();
